@@ -61,9 +61,12 @@ function removeEmployee() {
 
 function addEmployee() {
     listRoles = [];
-    const query = 'SELECT title FROM role';
+    const query = 'SELECT * FROM role';
     connection.query(query, (err, res) => {
-        res.forEach(({ title }) => listRoles.push(title));
+        for (let i = 0; i < res.length; i++) {
+            let newRole = res[i].id + " " +res[i].title;
+            listRoles.push (newRole);
+        }
     });
     inquirer.prompt([
         {
@@ -83,7 +86,8 @@ function addEmployee() {
             choices: listRoles
         }
     ]).then(({addFirstName,addLastName,roleAssign}) => {
-        const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${addFirstName}", "${addLastName}", ${(listRoles.indexOf(roleAssign)+1)},null);`;
+        let newID = parseInt(roleAssign);
+        const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${addFirstName}", "${addLastName}", ${newID},null);`;
         connection.query(query, (err, res) => {
         console.info(ck.green(`added new employee`));
         askQuestion();
@@ -423,7 +427,7 @@ function departmentQuestions() {
                 removeDepartment();
                 break;
             case "Budget by Department":  //done
-                viewQuery(`SELECT department.name AS "Department", CONCAT("$",FORMAT(sum(role.salary),2)) AS "Total Salary" FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN department ON (role.department_id = department.id) GROUP BY department.id ORDER BY "Total Salary"`,`Budget (by Department):`);
+                viewQuery(`SELECT department.name AS "Department", CONCAT("$",FORMAT(sum(role.salary),2)) AS "Total Salary" FROM employee INNER JOIN role ON (employee.role_id = role.id) INNER JOIN department ON (role.department_id = department.id) GROUP BY department.id ORDER BY sum(role.salary) DESC`,`Budget (by Department):`);
                 break;
             default: 
                 askQuestion();
@@ -463,7 +467,7 @@ const askQuestion = () => {
                 departmentQuestions();  //done
                 break;
             case "Exit":
-                console.log(ck.blue('Thanks for looking!'));
+                console.log(ck.blue('Thanks for visiting!'));
                 connection.end();
                 break;
             default: askQuestion();
