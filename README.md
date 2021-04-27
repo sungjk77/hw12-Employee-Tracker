@@ -11,19 +11,20 @@ Table of Contents
 - [License](##📋License)
 - [Contributing](##📝Contributing)
 - [Tests](##✔️Tests)
-
+- [Screenshot](##📸Screenshot)
 
 ------------
 ## 🛠️Installation
 To install necessary dependencies, run the following command:
 
-npm start
+npm install
 
 ------------
 ## 📐Usage
 Please see below for instructions on usage:
 
 make sure to install all dependencies first
+npm start
 
 ------------
 ## 📋License
@@ -44,3 +45,6 @@ sungjk@uw.edu
 To test the program, please run the following:
 
 NA
+------------
+## 📸Screenshot
+![alt text](https://raw.githubusercontent.com/sungjk77/hw12-Employee-Tracker/main/assets/screenshot.JPG)
